@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socte.io Intro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/chat.css">    
+    <link rel="stylesheet" href="/chat2.css">    
     <script src="/socket.io/socket.io.js"></script>
 
 </head>
@@ -18,8 +18,10 @@
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Name</label>
               <input type="text" class="form-control" id="name" aria-describedby="emailHelp" autocomplete="off">
+              <label for="exampleInputEmail1" class="form-label">Room</label>
+              <input type="text" class="form-control" id="room" aria-describedby="emailHelp" autocomplete="off">
             </div>
-            <button type="button" class="btn btn-dark" id="username-btn" onclick="setUsername()">Set</button>
+            <button type="button" class="btn btn-dark" id="username-btn" onclick="setRoomUsername()">Set</button>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Message</label>
               <input type="text" class="form-control" id="message" aria-describedby="emailHelp" autocomplete="off">
@@ -51,11 +53,13 @@
 
         //Send custom event from client to server
 
-        function setUsername() {
+        function setRoomUsername() {
             const name = document.getElementById('name').value
-            socket.emit('setUsername', name)
+            const room = document.getElementById('room').value
+            socket.emit('setRoomUsername', { name, room })
             // document.getElementById('name').value = ' ' // clear the input field
             document.getElementById('name').disabled = true // we are use dissabled
+            document.getElementById('room').disabled = true // we are use dissabled
             document.getElementById('username-btn').disabled = true // we are use dissabled
             
         }
@@ -69,6 +73,7 @@
 
         // Handel custom event from the server
         socket.on('joinMessage', ( message ) => {
+            console.log(message)
             const liItem = document.createElement('li')
             liItem.classList.add('list-group-item')
 
